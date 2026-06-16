@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitnessPlan - Dein Trainingsplaner</title>
+    <meta name="description" content="FitnessPlan - Moderne WebApp zur Erstellung und Verwaltung deines Trainingsplans">
+    <meta name="theme-color" content="#ff6b6b">
+    <title>FitnessPlan - Dein persönlicher Trainingsplaner</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,10 +21,10 @@
             </div>
         </header>
 
-        <!-- Navigation -->
+        <!-- Navigation Tabs -->
         <nav class="nav-tabs">
-            <button class="nav-tab active" data-view="week">Wochenplan</button>
-            <button class="nav-tab" data-view="day">Tagesansicht</button>
+            <button class="nav-tab active" data-view="week">📅 Wochenplan</button>
+            <button class="nav-tab" data-view="day">📆 Tagesansicht</button>
         </nav>
 
         <!-- Main Content -->
@@ -30,47 +32,52 @@
             <!-- Wochenplan View -->
             <section id="weekView" class="view active">
                 <div class="week-header">
-                    <button class="btn-nav" id="prevWeek">← Vorherige Woche</button>
+                    <button class="btn-nav" id="prevWeek">← Vorherige</button>
                     <h2 id="weekTitle">Woche 1</h2>
-                    <button class="btn-nav" id="nextWeek">Nächste Woche →</button>
+                    <button class="btn-nav" id="nextWeek">Nächste →</button>
                 </div>
 
+                <!-- Wochenstatistik -->
                 <div class="week-stats">
                     <div class="stat-card">
                         <div class="stat-value" id="weekProgress">0%</div>
-                        <div class="stat-label">Fortschritt</div>
+                        <div class="stat-label">📈 Fortschritt</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="weekCompleted">0/0</div>
-                        <div class="stat-label">Erledigt</div>
+                        <div class="stat-label">✓ Erledigt</div>
                     </div>
                 </div>
 
+                <!-- Wochenplandaten -->
                 <div class="week-container" id="weekContainer"></div>
             </section>
 
             <!-- Tagesansicht View -->
             <section id="dayView" class="view">
                 <div class="day-header">
-                    <button class="btn-nav" id="prevDay">← Vorheriger Tag</button>
+                    <button class="btn-nav" id="prevDay">← Vorheriger</button>
                     <h2 id="dayTitle">Montag</h2>
-                    <button class="btn-nav" id="nextDay">Nächster Tag →</button>
+                    <button class="btn-nav" id="nextDay">Nächster →</button>
                 </div>
 
+                <!-- Tagesstatistik -->
                 <div class="day-content">
                     <div class="day-stats">
                         <div class="stat-card">
                             <div class="stat-value" id="dayProgress">0%</div>
-                            <div class="stat-label">Fortschritt heute</div>
+                            <div class="stat-label">📈 Fortschritt</div>
                         </div>
                     </div>
+
+                    <!-- Trainingseinträge für den Tag -->
                     <div id="dayTrainings" class="trainings-list"></div>
                 </div>
             </section>
         </main>
 
         <!-- Floating Action Button -->
-        <button id="addBtn" class="fab">+</button>
+        <button id="addBtn" class="fab" title="Neues Training hinzufügen">➕</button>
     </div>
 
     <!-- Modal: Training hinzufügen/bearbeiten -->
@@ -78,12 +85,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle">Training hinzufügen</h2>
-                <button class="btn-close">&times;</button>
+                <button class="btn-close" aria-label="Modal schließen">&times;</button>
             </div>
+
             <form id="trainingForm" class="form">
+                <!-- Tag Auswahl -->
                 <div class="form-group">
-                    <label for="trainingDay">Tag:</label>
-                    <select id="trainingDay" required>
+                    <label for="trainingDay">📅 Tag:</label>
+                    <select id="trainingDay" required aria-label="Wähle einen Tag">
                         <option value="0">Montag</option>
                         <option value="1">Dienstag</option>
                         <option value="2">Mittwoch</option>
@@ -94,37 +103,64 @@
                     </select>
                 </div>
 
+                <!-- Titel -->
                 <div class="form-group">
-                    <label for="trainingTitle">Titel:</label>
-                    <input type="text" id="trainingTitle" placeholder="z.B. Morgenlauf" required>
+                    <label for="trainingTitle">🎯 Titel:</label>
+                    <input 
+                        type="text" 
+                        id="trainingTitle" 
+                        placeholder="z.B. Morgenlauf, Beintraining..." 
+                        maxlength="100"
+                        required 
+                        aria-label="Trainingstitel"
+                    >
                 </div>
 
+                <!-- Trainingsart -->
                 <div class="form-group">
-                    <label for="trainingType">Trainingsart:</label>
-                    <select id="trainingType" required>
-                        <option value="running">🏃 Laufen</option>
-                        <option value="running_easy">- Locker</option>
-                        <option value="running_tempo">- Tempo</option>
-                        <option value="running_interval">- Intervalle</option>
+                    <label for="trainingType">🏋️ Trainingsart:</label>
+                    <select id="trainingType" required aria-label="Wähle Trainingsart">
+                        <optgroup label="Laufen">
+                            <option value="running_easy">🏃 Locker</option>
+                            <option value="running_tempo">🏃 Tempo</option>
+                            <option value="running_interval">🏃 Intervalle</option>
+                        </optgroup>
                         <option value="strength">💪 Krafttraining</option>
                         <option value="recovery">☘️ Regeneration/Pause</option>
                         <option value="stretching">🧘 Dehnen/Mobilität</option>
                     </select>
                 </div>
 
+                <!-- Dauer -->
                 <div class="form-group">
-                    <label for="trainingDuration">Dauer (Minuten):</label>
-                    <input type="number" id="trainingDuration" placeholder="45" min="0" max="1440" required>
+                    <label for="trainingDuration">⏱️ Dauer (Minuten):</label>
+                    <input 
+                        type="number" 
+                        id="trainingDuration" 
+                        placeholder="45" 
+                        min="0" 
+                        max="1440" 
+                        required 
+                        aria-label="Trainings-Dauer in Minuten"
+                    >
                 </div>
 
+                <!-- Notiz -->
                 <div class="form-group">
-                    <label for="trainingNotes">Notiz (optional):</label>
-                    <textarea id="trainingNotes" placeholder="Deine Gedanken zum Training..."></textarea>
+                    <label for="trainingNotes">📝 Notiz (optional):</label>
+                    <textarea 
+                        id="trainingNotes" 
+                        placeholder="Deine Gedanken zum Training, Gefühl, Anmerkungen..." 
+                        maxlength="500"
+                        rows="4"
+                        aria-label="Trainingsnotiz"
+                    ></textarea>
                 </div>
 
+                <!-- Buttons -->
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Speichern</button>
-                    <button type="button" class="btn btn-secondary" id="deleteBtn" style="display: none;">Löschen</button>
+                    <button type="submit" class="btn btn-primary">💾 Speichern</button>
+                    <button type="button" class="btn btn-secondary" id="deleteBtn" style="display: none;">🗑️ Löschen</button>
                 </div>
             </form>
         </div>
@@ -134,13 +170,26 @@
     <div id="statsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Statistik</h2>
-                <button class="btn-close">&times;</button>
+                <h2>📊 Statistik & Übersicht</h2>
+                <button class="btn-close" aria-label="Modal schließen">&times;</button>
             </div>
-            <div class="stats-content" id="statsContent"></div>
+
+            <div class="stats-content" id="statsContent">
+                <!-- Wird durch JavaScript gefüllt -->
+                <div style="text-align: center; padding: 40px 20px; color: var(--gray);">
+                    <div style="font-size: 32px; margin-bottom: 16px;">📊</div>
+                    <p>Lade Statistiken...</p>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Loading Indicator (optional) -->
+    <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Script -->
     <script src="app.js"></script>
 </body>
 </html>
