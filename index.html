@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitnessPlan - Dein Trainingsplaner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">💪 FitnessPlan</h1>
+                <div class="header-actions">
+                    <button id="darkModeToggle" class="btn-icon" title="Dark Mode">🌙</button>
+                    <button id="statsBtn" class="btn-icon" title="Statistik">📊</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-view="week">Wochenplan</button>
+            <button class="nav-tab" data-view="day">Tagesansicht</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Wochenplan View -->
+            <section id="weekView" class="view active">
+                <div class="week-header">
+                    <button class="btn-nav" id="prevWeek">← Vorherige Woche</button>
+                    <h2 id="weekTitle">Woche 1</h2>
+                    <button class="btn-nav" id="nextWeek">Nächste Woche →</button>
+                </div>
+
+                <div class="week-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="weekProgress">0%</div>
+                        <div class="stat-label">Fortschritt</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="weekCompleted">0/0</div>
+                        <div class="stat-label">Erledigt</div>
+                    </div>
+                </div>
+
+                <div class="week-container" id="weekContainer"></div>
+            </section>
+
+            <!-- Tagesansicht View -->
+            <section id="dayView" class="view">
+                <div class="day-header">
+                    <button class="btn-nav" id="prevDay">← Vorheriger Tag</button>
+                    <h2 id="dayTitle">Montag</h2>
+                    <button class="btn-nav" id="nextDay">Nächster Tag →</button>
+                </div>
+
+                <div class="day-content">
+                    <div class="day-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="dayProgress">0%</div>
+                            <div class="stat-label">Fortschritt heute</div>
+                        </div>
+                    </div>
+                    <div id="dayTrainings" class="trainings-list"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button id="addBtn" class="fab">+</button>
+    </div>
+
+    <!-- Modal: Training hinzufügen/bearbeiten -->
+    <div id="trainingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Training hinzufügen</h2>
+                <button class="btn-close">&times;</button>
+            </div>
+            <form id="trainingForm" class="form">
+                <div class="form-group">
+                    <label for="trainingDay">Tag:</label>
+                    <select id="trainingDay" required>
+                        <option value="0">Montag</option>
+                        <option value="1">Dienstag</option>
+                        <option value="2">Mittwoch</option>
+                        <option value="3">Donnerstag</option>
+                        <option value="4">Freitag</option>
+                        <option value="5">Samstag</option>
+                        <option value="6">Sonntag</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="trainingTitle">Titel:</label>
+                    <input type="text" id="trainingTitle" placeholder="z.B. Morgenlauf" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="trainingType">Trainingsart:</label>
+                    <select id="trainingType" required>
+                        <option value="running">🏃 Laufen</option>
+                        <option value="running_easy">- Locker</option>
+                        <option value="running_tempo">- Tempo</option>
+                        <option value="running_interval">- Intervalle</option>
+                        <option value="strength">💪 Krafttraining</option>
+                        <option value="recovery">☘️ Regeneration/Pause</option>
+                        <option value="stretching">🧘 Dehnen/Mobilität</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="trainingDuration">Dauer (Minuten):</label>
+                    <input type="number" id="trainingDuration" placeholder="45" min="0" max="1440" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="trainingNotes">Notiz (optional):</label>
+                    <textarea id="trainingNotes" placeholder="Deine Gedanken zum Training..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                    <button type="button" class="btn btn-secondary" id="deleteBtn" style="display: none;">Löschen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Statistik -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Statistik</h2>
+                <button class="btn-close">&times;</button>
+            </div>
+            <div class="stats-content" id="statsContent"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
